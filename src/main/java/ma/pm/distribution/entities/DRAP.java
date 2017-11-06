@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
 public class DRAP implements Serializable {
 	
@@ -19,7 +22,8 @@ public class DRAP implements Serializable {
 	
 	private String drap;
 	
-	@OneToMany(mappedBy="drap", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="drap")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Region> regions;
 	
 	public DRAP() {
@@ -54,6 +58,11 @@ public class DRAP implements Serializable {
 
 	public void setRegions(List<Region> regions) {
 		this.regions = regions;
+	}
+
+	@Override
+	public String toString() {
+		return "DRAP [idDrap=" + idDrap + ", drap=" + drap + ", regions=" + regions + "]";
 	}
 	
 }

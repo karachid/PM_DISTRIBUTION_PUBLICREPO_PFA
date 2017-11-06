@@ -32,38 +32,55 @@
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
       <!--main content start-->
-      <section id="main-content">
-          <section class="wrapper site-min-height">
+     <!--  <section id="main-content">  -->
+         <!--  <section class="wrapper site-min-height">  -->
           	<h3>Voulez vous se connecter en tant que </h3>
-          	<div class="row mt">
+          	<div class="row">
           		<div class="col-lg-12" >
-          			<div align="center">
+          		<div class="col-lg-4">
+          		</div>
+          		<div class="col-lg-4">
+          			<!-- <img src="<%=request.getContextPath() %>/resources/img/pmlogo.jpg" alt="logo de la poste du maroc"/>  -->
+          		</div>
+          		<div class="col-lg-4">
+          		</div>
+          			<div class="col-lg-12">
           					<div class="col-lg-3">
-          						<a href="<%=request.getContextPath() %>/login/login/?type=siege">Siège</a>
+          					</div>
+          					<div class="col-lg-6">
+          						<div class="col-lg-4" style="text-align : justify">
+          						Connectez vous depuis le siège afin de pouvoir contrôler la tolalité des régions avec l'ensemble des sites qui y font partie 
+          							<div align="center"><a href="<%=request.getContextPath() %>/login/login/siege">Siège</a></div>
+          						</div>
+          						<div class="col-lg-4" style="text-align : justify">
+          						<!-- <img src="<%=request.getContextPath() %>/resources/img/region.jpg" width="200" height="250"/>  -->
+          						Connectez vous depuis le région afin de pouvoir contrôler la tolalité des site avec l'ensemble des ressources qui y font partie
+          							<div align="center"><a href="<%=request.getContextPath() %>/login/login/region">Région</a></div>
+          						</div>
+          						<div class="col-lg-4" style="text-align : justify">
+          						Connectez vous depuis le site afin de pouvoir gérer l'effectation des ressources aux tournées et aux facteurs, et voir ses statistiques
+          							<div align="center"><a href="<%=request.getContextPath() %>/login/login/site">Site</a></div>
+          						</div>
           					</div>
           					<div class="col-lg-3">
-          						<a href="<%=request.getContextPath() %>/login/login/?type=region">Région</a>
-          					</div>
-          					<div class="col-lg-3">
-          						<a href="<%=request.getContextPath() %>/login/login/?type=site">Site</a>
           					</div>
           			</div>
           		</div>
           	</div>
 			
-		</section><! --/wrapper -->
-      </section><!-- /MAIN CONTENT -->
+	<!-- </section> /wrapper -->
+    <!--  </section> /MAIN CONTENT -->
 
       <!--main content end-->
       <!--footer start-->
-      <footer class="site-footer">
+     <!--  <footer class="site-footer">
           <div class="text-center">
               2014 - Alvarez.is
               <a href="blank.html#" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>
           </div>
-      </footer>
+      </footer>  -->
       <!--footer end-->
   </section>
 

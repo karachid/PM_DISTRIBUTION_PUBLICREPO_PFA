@@ -8,14 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 @Entity
 public class Tenue implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idT;
+	private Long idT;
 	
 	private String typeTenue;
 	
@@ -27,28 +27,31 @@ public class Tenue implements Serializable {
 	
 	private int tailleChemiseMC;
 	
-	private int tailleGilet;
+	private String tailleGilet;
 	
-	private int tailleParka;
+	private String tailleParka;
 	
-	private int tailleCardigan;
+	private String tailleCardigan;
 	
-	private int taillePullOver;
+	private String taillePullOver;
 	
 	private int tailleCasquette;
 	
-	private String observation;
+	private String observationTenue;
+	
 	
 	@OneToOne(mappedBy="tenue")
+	@JsonBackReference
 	private Facteur facteur;
+	
 	
 	public Tenue() {
 		super(); 
 	}
 
 	public Tenue(String typeTenue, int tailleVeste, int taillePantalon, int tailleChemiseML,
-			int tailleChemiseMC, int tailleGilet, int tailleParka, int tailleCardigan, int taillePullOver,
-			int tailleCasquette, String observation, Facteur facteur) {
+			int tailleChemiseMC, String tailleGilet, String tailleParka, String tailleCardigan, String taillePullOver,
+			int tailleCasquette, String observationTenue, Facteur facteur) {
 		super();
 		this.typeTenue = typeTenue;
 		this.tailleVeste = tailleVeste;
@@ -60,15 +63,15 @@ public class Tenue implements Serializable {
 		this.tailleCardigan = tailleCardigan;
 		this.taillePullOver = taillePullOver;
 		this.tailleCasquette = tailleCasquette;
-		this.observation = observation;
+		this.observationTenue = observationTenue;
 		this.facteur = facteur;
 	}
 
-	public int getIdT() {
+	public Long getIdT() {
 		return idT;
 	}
 
-	public void setIdT(int idT) {
+	public void setIdT(Long idT) {
 		this.idT = idT;
 	}
 
@@ -112,35 +115,35 @@ public class Tenue implements Serializable {
 		this.tailleChemiseMC = tailleChemiseMC;
 	}
 
-	public int getTailleGilet() {
+	public String getTailleGilet() {
 		return tailleGilet;
 	}
 
-	public void setTailleGilet(int tailleGilet) {
+	public void setTailleGilet(String tailleGilet) {
 		this.tailleGilet = tailleGilet;
 	}
 
-	public int getTailleParka() {
+	public String getTailleParka() {
 		return tailleParka;
 	}
 
-	public void setTailleParka(int tailleParka) {
+	public void setTailleParka(String tailleParka) {
 		this.tailleParka = tailleParka;
 	}
 
-	public int getTailleCardigan() {
+	public String getTailleCardigan() {
 		return tailleCardigan;
 	}
 
-	public void setTailleCardigan(int tailleCardigan) {
+	public void setTailleCardigan(String tailleCardigan) {
 		this.tailleCardigan = tailleCardigan;
 	}
 
-	public int getTaillePullOver() {
+	public String getTaillePullOver() {
 		return taillePullOver;
 	}
 
-	public void setTaillePullOver(int taillePullOver) {
+	public void setTaillePullOver(String taillePullOver) {
 		this.taillePullOver = taillePullOver;
 	}
 
@@ -151,13 +154,14 @@ public class Tenue implements Serializable {
 	public void setTailleCasquette(int tailleCasquette) {
 		this.tailleCasquette = tailleCasquette;
 	}
+	
 
-	public String getObservation() {
-		return observation;
+	public String getObservationTenue() {
+		return observationTenue;
 	}
 
-	public void setObservation(String observation) {
-		this.observation = observation;
+	public void setObservationTenue(String observationTenue) {
+		this.observationTenue = observationTenue;
 	}
 
 	public Facteur getFacteur() {
@@ -166,6 +170,15 @@ public class Tenue implements Serializable {
 
 	public void setFacteur(Facteur facteur) {
 		this.facteur = facteur;
+	}
+
+	@Override
+	public String toString() {
+		return "Tenue [idT=" + idT + ", typeTenue=" + typeTenue + ", tailleVeste=" + tailleVeste + ", taillePantalon="
+				+ taillePantalon + ", tailleChemiseML=" + tailleChemiseML + ", tailleChemiseMC=" + tailleChemiseMC
+				+ ", tailleGilet=" + tailleGilet + ", tailleParka=" + tailleParka + ", tailleCardigan=" + tailleCardigan
+				+ ", taillePullOver=" + taillePullOver + ", tailleCasquette=" + tailleCasquette + ", observationTenue="
+				+ observationTenue + "]";
 	}
 	
 }

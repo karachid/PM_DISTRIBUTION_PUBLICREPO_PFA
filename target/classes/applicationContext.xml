@@ -37,5 +37,6 @@
 	<context:annotation-config></context:annotation-config>
 	
 	<import resource="classpath:config/beans-config.xml"/>
+	<!-- <import resource="classpath:config/security-context.xml"/>  -->
 	
 </beans>

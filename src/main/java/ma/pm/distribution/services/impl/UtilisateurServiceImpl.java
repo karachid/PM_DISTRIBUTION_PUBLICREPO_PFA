@@ -41,5 +41,10 @@ public class UtilisateurServiceImpl implements IUtilisateurService {
 	public void remove(Long id) {
 		dao.remove(id);
 	}
+
+	@Override
+	public boolean isExist(List<Object> paramNameList, List<Object> paramValueList) {
+		return dao.isExist(paramNameList, paramValueList);
+	}
 	
 }

@@ -2,64 +2,70 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-		
-		<bean id="affectationDao" class="ma.pm.distribution.dao.impl.AffectationDAOImpl" />
-		<bean id="affectationService" class="ma.pm.distribution.services.impl.AffectationServiceImpl">
-			<property name="dao" ref="affectationDao"></property>
-		</bean>
-		
-		<bean id="drapDao" class="ma.pm.distribution.dao.impl.DrapDAOImpl" />
-		<bean id="drapService" class="ma.pm.distribution.services.impl.DrapServiceImpl">
-			<property name="dao" ref="drapDao"></property>
-		</bean>
-		
-		<bean id="facteurDao" class="ma.pm.distribution.dao.impl.FacteurDAOImpl" />
-		<bean id="facteurService" class="ma.pm.distribution.services.impl.FacteurServiceImpl">
-			<property name="dao" ref="facteurDao"></property>
-		</bean>
-		
-		<bean id="marqueDao" class="ma.pm.distribution.dao.impl.MarqueDAOImpl" />
-		<bean id="marqueService" class="ma.pm.distribution.services.impl.MarqueServiceImpl">
-			<property name="dao" ref="marqueDao"></property>
-		</bean>
-		
-		<bean id="modeleDao" class="ma.pm.distribution.dao.impl.ModeleDAOImpl" />
-		<bean id="modeleService" class="ma.pm.distribution.services.impl.ModeleServiceImpl">
-			<property name="dao" ref="modeleDao"></property>
-		</bean>
-		
-		<bean id="moyenLocomotionDao" class="ma.pm.distribution.dao.impl.MoyenLocomotionDAOImpl" />
-		<bean id="moyenLocomotionService" class="ma.pm.distribution.services.impl.MoyenLocomotionServiceImpl">
-			<property name="dao" ref="moyenLocomotionDao"></property>
-		</bean>
-		
-		<bean id="regionDao" class="ma.pm.distribution.dao.impl.RegionDAOImpl" />
-		<bean id="regionService" class="ma.pm.distribution.services.impl.RegionServiceImpl">
-			<property name="dao" ref="regionDao"></property>
-		</bean>
-		
-		<bean id="secteurDao" class="ma.pm.distribution.dao.impl.SecteurDAOImpl" />
-		<bean id="secteurService" class="ma.pm.distribution.services.impl.SecteurServiceImpl">
-			<property name="dao" ref="secteurDao"></property>
-		</bean>
-		
-		<bean id="siteDao" class="ma.pm.distribution.dao.impl.SiteDAOImpl" />
-		<bean id="siteService" class="ma.pm.distribution.services.impl.SiteServiceImpl">
-			<property name="dao" ref="siteDao"></property>
-		</bean>
-		<bean id="tenueDao" class="ma.pm.distribution.dao.impl.TenueDAOImpl" />
-		<bean id="tenueService" class="ma.pm.distribution.services.impl.TenuServiceImpl">
-			<property name="dao" ref="tenueDao"></property>
-		</bean>
-		
-		<bean id="tourneeDao" class="ma.pm.distribution.dao.impl.TourneeDAOImpl" />
-		<bean id="tourneeService" class="ma.pm.distribution.services.impl.TourneeServiceImpl">
-			<property name="dao" ref="tourneeDao"></property>
-		</bean>
-		
-		<bean id="utilisateurDao" class="ma.pm.distribution.dao.impl.UtilisateurDAOImpl" />
-		<bean id="utilisateurService" class="ma.pm.distribution.services.impl.UtilisateurServiceImpl">
-			<property name="dao" ref="utilisateurDao"></property>
-		</bean>
+
+	<bean id="affectationDao" class="ma.pm.distribution.dao.impl.AffectationDAOImpl" />
+	<bean id="affectationService" class="ma.pm.distribution.services.impl.AffectationServiceImpl">
+		<property name="dao" ref="affectationDao"></property>
+	</bean>
+
+	<bean id="drapDao" class="ma.pm.distribution.dao.impl.DrapDAOImpl" />
+	<bean id="drapService" class="ma.pm.distribution.services.impl.DrapServiceImpl">
+		<property name="dao" ref="drapDao"></property>
+	</bean>
+
+	<bean id="facteurDao" class="ma.pm.distribution.dao.impl.FacteurDAOImpl" />
+	<bean id="facteurService" class="ma.pm.distribution.services.impl.FacteurServiceImpl">
+		<property name="dao" ref="facteurDao"></property>
+	</bean>
+
+	<bean id="marqueDao" class="ma.pm.distribution.dao.impl.MarqueDAOImpl" />
+	<bean id="marqueService" class="ma.pm.distribution.services.impl.MarqueServiceImpl">
+		<property name="dao" ref="marqueDao"></property>
+	</bean>
+
+	<bean id="modeleDao" class="ma.pm.distribution.dao.impl.ModeleDAOImpl" />
+	<bean id="modeleService" class="ma.pm.distribution.services.impl.ModeleServiceImpl">
+		<property name="dao" ref="modeleDao"></property>
+	</bean>
+
+	<bean id="moyenLocomotionDao" class="ma.pm.distribution.dao.impl.MoyenLocomotionDAOImpl" />
+	<bean id="moyenLocomotionService"
+		class="ma.pm.distribution.services.impl.MoyenLocomotionServiceImpl">
+		<property name="dao" ref="moyenLocomotionDao"></property>
+	</bean>
+
+	<bean id="regionDao" class="ma.pm.distribution.dao.impl.RegionDAOImpl" />
+	<bean id="regionService" class="ma.pm.distribution.services.impl.RegionServiceImpl">
+		<property name="dao" ref="regionDao"></property>
+	</bean>
+
+	<bean id="secteurDao" class="ma.pm.distribution.dao.impl.SecteurDAOImpl" />
+	<bean id="secteurService" class="ma.pm.distribution.services.impl.SecteurServiceImpl">
+		<property name="dao" ref="secteurDao"></property>
+	</bean>
+
+	<bean id="siteDao" class="ma.pm.distribution.dao.impl.SiteDAOImpl" />
+	<bean id="siteService" class="ma.pm.distribution.services.impl.SiteServiceImpl">
+		<property name="dao" ref="siteDao"></property>
+	</bean>
+	<bean id="tenueDao" class="ma.pm.distribution.dao.impl.TenueDAOImpl" />
+	<bean id="tenueService" class="ma.pm.distribution.services.impl.TenuServiceImpl">
+		<property name="dao" ref="tenueDao"></property>
+	</bean>
+
+	<bean id="tourneeDao" class="ma.pm.distribution.dao.impl.TourneeDAOImpl" />
+	<bean id="tourneeService" class="ma.pm.distribution.services.impl.TourneeServiceImpl">
+		<property name="dao" ref="tourneeDao"></property>
+	</bean>
+
+	<bean id="utilisateurDao" class="ma.pm.distribution.dao.impl.UtilisateurDAOImpl" />
+	<bean id="utilisateurService" class="ma.pm.distribution.services.impl.UtilisateurServiceImpl">
+		<property name="dao" ref="utilisateurDao"></property>
+	</bean>
 	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<!-- maxUploadSize=10MB -->
+			<property name="maxUploadSize" value="10240000"/>
+	</bean>
+
 </beans>

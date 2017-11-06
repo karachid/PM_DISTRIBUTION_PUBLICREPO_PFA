@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ma.pm.distribution.dao.ISecteurDAO;
 import ma.pm.distribution.entities.Secteur;
+import ma.pm.distribution.entities.Site;
 import ma.pm.distribution.services.ISecteurService;
 
 @Transactional
@@ -40,6 +41,11 @@ public class SecteurServiceImpl implements ISecteurService {
 	@Override
 	public void remove(Long id) {
 		dao.remove(id);
+	}
+
+	@Override
+	public Secteur findOne(String paramName, String paramValue) {
+		return dao.findOne(paramName, paramValue);
 	}
 
 }

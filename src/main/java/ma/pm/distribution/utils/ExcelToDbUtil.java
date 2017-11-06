@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 import jxl.Cell;
@@ -21,6 +22,7 @@ public class ExcelToDbUtil {
 		String pasdword="";
 		Connection cn=null;
 		Statement st=null;
+		ResultSet rs;
 		String sql=null;
 		
 		Workbook workbook = null;
@@ -41,6 +43,27 @@ public class ExcelToDbUtil {
 		Cell capaciteHorsPic=null;
 		Cell dateMaj=null;
 		Cell observation=null;
+		
+		StringBuilder sqlFields = new StringBuilder();
+		StringBuilder sqlValues = new StringBuilder();
+		String finalQuery;
+		
+		String dateCreationSplitted[];
+		String dateCreationToInsert = null;
+		String dateMajSplitted[];
+		String dateMajToInsert = null;
+		
+		boolean isEmpty=false;
+		
+		Integer trajetTotalToInsert;
+		Integer montantMensuelToInsert;
+		Integer frequencePrJourToInsert;
+		Integer capacitePicToInsert;
+		Integer capaciteHorsPicToInsert;
+		Integer numTourneeToInsert;
+		
+		int codePostalSecteur, idS;
+		String secteurQuery;
 		
 		try {
 			/* Récupération du classeur Excel (en lecture) */
@@ -72,77 +95,184 @@ public class ExcelToDbUtil {
 				dateMaj = sheet.getCell(24, i);
 				observation = sheet.getCell(25, i);
 				
+				/*
+				 Début : Traitement numéro tournée
+				 */
+				if(numTournee.getContents().split("-").length==2) {
+					numTourneeToInsert= Integer.parseInt(numTournee.getContents().split("-")[1]);
+					codePostalSecteur=Integer.parseInt(numTournee.getContents().split("-")[0]);
+				}
+				else {
+					numTourneeToInsert=-1;
+					codePostalSecteur=50;
+				}
+				/*
+				 Fin : Traitement numéro tournée
+				 */
+				
+				
+				/*
+				 Début : Extraire le id du secteur auquel apprtient la tournée
+				 */
+				if(codePostalSecteur!=50) {
+					Class.forName("com.mysql.jdbc.Driver");
+					cn = DriverManager.getConnection(url, login, pasdword);
+					st=cn.createStatement();
+					secteurQuery ="SELECT idS FROM secteur where codePostal="+codePostalSecteur+";";
+					rs = st.executeQuery(secteurQuery);
+					rs.next();
+					idS=rs.getInt("idS");
+				}
+				else {
+					idS=codePostalSecteur;
+				}
+				//System.out.println("idS  = " + idS );
+				/*
+				 Fin :  Extraire le id du secteur auquel apprtient la tournée
+				 */
+				
+				
+				/*
+				 Début : Traitement Trajet Total
+				 */
+				if(trajetTotal.getContents().length()==0) {
+					trajetTotalToInsert=null;
+				}
+				else {
+					trajetTotalToInsert=Integer.parseInt(trajetTotal.getContents());
+				}
+				/*
+				 Fin : Traitement Trajet Total
+				 */
+				
+				/*
+				 Début : Traitement montant Mensuel
+				 */
+				if(montantMensuel.getContents().length()==0) {
+					montantMensuelToInsert=null;
+				}
+				else {
+					montantMensuelToInsert=Integer.parseInt(montantMensuel.getContents());
+				}
+				/*
+				 Fin : Traitement montant Mensuel
+				 */
+				
+				/*
+				 Début : Traitement fréquence par jour 
+				 */
+				if(frequencePrJour.getContents().length()==0) {
+					frequencePrJourToInsert=null;
+				}
+				else {
+					frequencePrJourToInsert= Integer.parseInt(frequencePrJour.getContents().split("/")[0]);
+				}
+				/*
+				 Fin : Traitement fréquence par jour 
+				 */
+				
+				
+				/*
+				 Début : Traitement capacite pic 
+				 */
+				if(capacitePic.getContents().length()==0) {
+					capacitePicToInsert=null;
+				}
+				else {
+					capacitePicToInsert=Integer.parseInt(capacitePic.getContents());
+				}
+				/*
+				 Fin : Traitement capacite pic 
+				 */
+				
+				/*
+				 Début : Traitement capacite hors pic 
+				 */
+				if(capaciteHorsPic.getContents().length()==0) {
+					capaciteHorsPicToInsert=null;
+				}
+				else {
+					capaciteHorsPicToInsert=Integer.parseInt(capaciteHorsPic.getContents());
+				}
+				/*
+				 Fin : Traitement capacite hors pic 
+				 */
+				
 				Class.forName("com.mysql.jdbc.Driver");
 				cn = DriverManager.getConnection(url, login, pasdword);
 				st=cn.createStatement();
-				sql="INSERT INTO tournee (capaciteDistributionHorsPIC, capaciteDistributionPIC, dateCreationTournee, "
-						+ "dateMaj, frequenceDistributionHebdomadaire, frequenceDistributionJour, 	montantMensuelIndemniteKm,"
-						+ "moyenLocomotion, natureTournee, numTournee, observation, statutTournee, "
-						+ "trajetTotal, typeHabitatDominant, typeTournee, typeZone) VALUES ("
-						+ Integer.parseInt(capaciteHorsPic.getContents()) + "," + Integer.parseInt(capacitePic.getContents())
-						+ "," + dateCreation.getContents().split("/")[2]+ ":" +dateCreation.getContents().split("/")[1]+ ":" 
-						+ dateCreation.getContents().split("/")[0] + "," + dateMaj.getContents().split("/")[2] + ":"
-						+ dateMaj.getContents().split("/")[1] + ":" + dateMaj.getContents().split("/")[0] + "," + Integer.parseInt(frequenceHebdo.getContents()) + ","
-						+ Integer.parseInt(frequencePrJour.getContents()) + "," + Integer.parseInt(montantMensuel.getContents()) + ",'"
-						+ moyenLoco.getContents() + "','" + natureTournee.getContents() + "'," + Integer.parseInt(numTournee.getContents()) + ",'"
-						+ observation.getContents() + "','" + statutTournee.getContents() + "'," + Integer.parseInt(trajetTotal.getContents()) + ",'"
-						+ typeHabitatDominant.getContents() + "','" + typeTournee.getContents() + "','" + zone.getContents() + "')" ;
-				st.executeUpdate(sql);
+				
+				sqlFields.append("INSERT INTO tournee (capaciteDistributionHorsPIC, capaciteDistributionPIC,");
+				sqlValues.append("VALUES ( " + capaciteHorsPicToInsert + "," + capacitePicToInsert);
+				
 				/*
-				String contenuZone = zone.getContents();
-				System.out.print(contenuZone+"#");
+				 Début : Traitement date de création
+				 */
+				dateCreationSplitted = dateCreation.getContents().split("/");
+				if(dateCreationSplitted.length==3) {
+					dateCreationToInsert=dateCreation.getContents().split("/")[2]+"-"+dateCreation.getContents().split("/")[1]+"-"+dateCreation.getContents().split("/")[0];
+				}else if(dateCreation.getContents().length()==2) {
+					dateCreationToInsert=null;
+				}else if(dateCreation.getContents().length()==4) {
+					dateCreationToInsert=dateCreation.getContents()+"-01-01";
+				}
+				else {
+					isEmpty=true;
+				}
+				if(dateCreationToInsert==null) {
+					sqlFields.append(" dateCreationTournee, ");
+					sqlValues.append(","+dateCreationToInsert);
+				}
+				else {
+					sqlFields.append(" dateCreationTournee, ");
+					sqlValues.append(",'"+dateCreationToInsert+"'");
+				}
 				
-				String contenuNumTournee = numTournee.getContents();
-				System.out.print(contenuNumTournee+"#");
+				isEmpty=false;
+				/*
+				 Fin : Traitement date de création
+				 */
 				
-				String contenuDateCreation = dateCreation.getContents();
-				System.out.print(contenuDateCreation+"#");
+				/*
+				 Début : Traitement date de MAJ
+				 */
+				dateMajSplitted = dateMaj.getContents().split("/");
+				if(dateMajSplitted.length==3) {
+					dateMajToInsert=dateMaj.getContents().split("/")[2]+"-"+dateMaj.getContents().split("/")[1]+"-"+dateMaj.getContents().split("/")[0];
+				}else if(dateMajSplitted.length==1) {
+					dateMajToInsert=dateMaj.getContents().split("/")[2]+"-01-01";
+				}else {
+					isEmpty=true;
+				}
+				if(!isEmpty) {
+					sqlFields.append("dateMaj,");
+					sqlValues.append(",'"+dateMajToInsert+"',");
+				}
+				isEmpty=false;
+				/*
+				 Fin : Traitement date de MAJ
+				 */
 				
-				String contenuTypeTournee = typeTournee.getContents();
-				System.out.print(contenuTypeTournee+"#");
+				sqlFields.append("frequenceDistributionHebdomadaire, frequenceDistributionJour, 	montantMensuelIndemniteKm,"
+						+ "typeMoyenLocomotion, natureTournee, numTournee, observation, statutTournee," + 
+						"trajetTotal, typeHabitatDominant, typeTournee, typeZone, 	secteur_idS)");
+				sqlValues.append( Integer.parseInt(frequenceHebdo.getContents().split("/")[0]) + ","
+						+ frequencePrJourToInsert + "," + montantMensuelToInsert + ",'"
+						+ moyenLoco.getContents() + "','" + natureTournee.getContents() + "'," + numTourneeToInsert + ",'"
+						+ observation.getContents() + "','" + statutTournee.getContents() + "'," + trajetTotalToInsert + ",'"
+						+ typeHabitatDominant.getContents() + "','" + typeTournee.getContents() + "','" + zone.getContents() + "',"+idS+")");				
 				
-				String contenuMoyenLoco = moyenLoco.getContents();
-				System.out.print(contenuMoyenLoco+"#");
+				finalQuery=sqlFields.toString()+sqlValues.toString();
 				
-				String contenuTrajetTotal = trajetTotal.getContents();
-				System.out.print(contenuTrajetTotal+"#");
+				System.out.println("i = "+ i);
+				st.executeUpdate(finalQuery);
 				
-				String contenuMontantMensuel = montantMensuel.getContents();
-				System.out.print(contenuMontantMensuel+"#");
+				//System.out.println("i = " + (i+1) + "=>" + finalQuery);
 				
-				String contenuFrequenceHebdo = frequenceHebdo.getContents();
-				System.out.print(contenuFrequenceHebdo+"#");
-				
-				String contenuFrequencePrJour = frequencePrJour.getContents();
-				System.out.print(contenuFrequencePrJour+"#");
-				
-				String contenuNatureTournee = natureTournee.getContents();
-				System.out.print(contenuNatureTournee+"#");
-				
-				String contenuTypeHabitatDominant = typeHabitatDominant.getContents();
-				System.out.print(contenuTypeHabitatDominant+"#");
-				
-				String contenuStatutTournee = statutTournee.getContents();
-				System.out.print(contenuStatutTournee+"#");
-				
-				String contenuCapacitePic = capacitePic.getContents();
-				System.out.print(contenuCapacitePic+"#");
-				
-				String contenuCapaciteHorsPic = capaciteHorsPic.getContents();
-				System.out.print(contenuCapaciteHorsPic+"#");
-				
-				String contenuDateMaj = dateMaj.getContents();
-				System.out.print(contenuDateMaj+"#");
-				
-				String contenuObservation = observation.getContents();
-				System.out.print(contenuObservation);
-				
-				System.out.println("");
-				*/
+				sqlValues.delete(0, sqlValues.length());
+				sqlFields.delete(0, sqlFields.length());
 				
 			}
-			
-			/* On peut récupérer le contenu d'une cellule en utilisant la méthode getContents() */
 			
 
 		} 

@@ -3,7 +3,9 @@ package ma.pm.distribution.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,16 +14,29 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 
 @Entity
 public class Facteur implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idF;
+	private Long idF;
 	
 	private int matricule;
 	
@@ -31,25 +46,36 @@ public class Facteur implements Serializable {
 	
 	private String sexe;
 	
+	@Temporal(TemporalType.DATE)
 	private Date dateNaissance;
 	
+	@Temporal(TemporalType.DATE)
 	private Date dateRecrutement;
 	
-	private String observation;
+	private String observationFacteur;
 	
-	@OneToOne
+	
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JsonManagedReference
 	private Tenue tenue;
 	
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(name="Affectation",joinColumns=@JoinColumn(name="IdF"), inverseJoinColumns=@JoinColumn(name="idT"))
-	private List<Tournee> tournees;
+	@OneToMany(mappedBy = "facteur")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Affectation> tournees;
+	
+	@ManyToOne
+	@JsonIgnore
+	private Site site;
+	
+	@OneToOne
+	private MoyenLocomotion moyenLocomotion;
 	
 	public Facteur() {
 		super();
 	}
 
 	public Facteur(int matricule, String prenom, String nom, String sexe, Date dateNaissance, Date dateRecrutement,
-			String observation, Tenue tenue, List<Tournee> tournees) {
+			String observationFacteur, Tenue tenue, List<Affectation> tournees) {
 		super();
 		this.matricule = matricule;
 		this.prenom = prenom;
@@ -57,16 +83,16 @@ public class Facteur implements Serializable {
 		this.sexe = sexe;
 		this.dateNaissance = dateNaissance;
 		this.dateRecrutement = dateRecrutement;
-		this.observation = observation;
+		this.observationFacteur = observationFacteur;
 		this.tenue = tenue;
 		this.tournees = tournees;
 	}
 
-	public int getIdF() {
+	public Long getIdF() {
 		return idF;
 	}
 
-	public void setIdF(int idF) {
+	public void setIdF(Long idF) {
 		this.idF = idF;
 	}
 
@@ -118,13 +144,6 @@ public class Facteur implements Serializable {
 		this.dateRecrutement = dateRecrutement;
 	}
 
-	public String getObservation() {
-		return observation;
-	}
-
-	public void setObservation(String observation) {
-		this.observation = observation;
-	}
 
 	public Tenue getTenue() {
 		return tenue;
@@ -133,7 +152,31 @@ public class Facteur implements Serializable {
 	public void setTenue(Tenue tenue) {
 		this.tenue = tenue;
 	}
-/*
+	
+	public MoyenLocomotion getMoyenLocomotionObj() {
+		return moyenLocomotion;
+	}
+
+	public void setMoyenLocomotionObj(MoyenLocomotion moyenLocomotion) {
+		this.moyenLocomotion = moyenLocomotion;
+	}
+	
+	public List<Affectation> getTournees() {
+		return tournees;
+	}
+
+	public void setTournees(List<Affectation> tournees) {
+        this.tournees = tournees;
+	}
+
+	public Site getSite() {
+		return site;
+	}
+
+	public void setSite(Site site) {
+		this.site = site;
+	}
+
 	public MoyenLocomotion getMoyenLocomotion() {
 		return moyenLocomotion;
 	}
@@ -141,13 +184,34 @@ public class Facteur implements Serializable {
 	public void setMoyenLocomotion(MoyenLocomotion moyenLocomotion) {
 		this.moyenLocomotion = moyenLocomotion;
 	}
-*/
-	public List<Tournee> getTournees() {
-		return tournees;
+	
+	
+	public String getObservationFacteur() {
+		return observationFacteur;
 	}
 
-	public void setTournees(List<Tournee> tournees) {
-		this.tournees = tournees;
+	public void setObservationFacteur(String observationFacteur) {
+		this.observationFacteur = observationFacteur;
+	}
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Facteur facteur = (Facteur) obj;
+        return Objects.equals(idF, facteur.getIdF());
+    }
+ 
+    @Override
+    public int hashCode() {
+        return Objects.hash(idF);
+    }
+
+	@Override
+	public String toString() {
+		return "Facteur [idF=" + idF + ", matricule=" + matricule + ", prenom=" + prenom + ", nom=" + nom + ", sexe="
+				+ sexe + ", dateNaissance=" + dateNaissance + ", dateRecrutement=" + dateRecrutement
+				+ ", observationFacteur=" + observationFacteur + "]";
 	}
 	
 }

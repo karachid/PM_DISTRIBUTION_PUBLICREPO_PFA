@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import ma.pm.distribution.dao.IRegionDAO;
+import ma.pm.distribution.entities.DRAP;
 import ma.pm.distribution.entities.Region;
 import ma.pm.distribution.services.IRegionService;
 
@@ -40,6 +41,11 @@ public class RegionServiceImpl implements IRegionService {
 	@Override
 	public void remove(Long id) {
 		dao.remove(id);
+	}
+
+	@Override
+	public Region findOne(String paramName, String paramValue) {
+		return dao.findOne(paramName, paramValue);
 	}
 
 }

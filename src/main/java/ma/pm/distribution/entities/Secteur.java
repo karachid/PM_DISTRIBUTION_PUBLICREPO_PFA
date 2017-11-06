@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,19 +23,20 @@ public class Secteur implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idS;
 	
-	@OneToMany(mappedBy="secteur")
+	@OneToMany(mappedBy="secteur", fetch=FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Tournee> tournees;
 	
 	@ManyToOne
 	private Site site;
 	
-	private int codePostal;
+	private String codePostal;
 	
 	public Secteur() {
 		super();
 	}
 
-	public Secteur(List<Tournee> tournees, Site site, int codePostal) {
+	public Secteur(List<Tournee> tournees, Site site, String codePostal) {
 		super();
 		this.tournees = tournees;
 		this.site = site;
@@ -62,12 +67,17 @@ public class Secteur implements Serializable{
 		this.site = site;
 	}
 
-	public int getCodePostal() {
+	public String getCodePostal() {
 		return codePostal;
 	}
 
-	public void setCodePostal(int codePostal) {
+	public void setCodePostal(String codePostal) {
 		this.codePostal = codePostal;
+	}
+
+	@Override
+	public String toString() {
+		return "Secteur [idS=" + idS + ", codePostal=" + codePostal + "]";
 	}
 	
 }

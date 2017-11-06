@@ -16,4 +16,6 @@ public interface ISiteService {
 	
 	public void remove(Long id);
 	
+	public Site findOne(String paramName, String paramValue);
+	
 }

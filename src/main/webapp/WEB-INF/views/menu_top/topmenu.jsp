@@ -148,7 +148,7 @@
             </div>
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">Logout</a></li>
+                    <li><a class="logout" href="<%=request.getContextPath() %>/login/logout/">Se déconnecter</a></li>
             	</ul>
             </div>
         </header>

@@ -42,4 +42,9 @@ public class AffectationServiceImpl implements IAffectationService {
 		dao.remove(id);
 	}
 
+	@Override
+	public Affectation saveAff(Affectation entity) {
+		return dao.saveAff(entity);
+	}	
+
 }

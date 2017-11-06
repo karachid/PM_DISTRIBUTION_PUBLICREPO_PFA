@@ -13,12 +13,16 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type_moyenlocomotion")
-public abstract class MoyenLocomotion implements Serializable {
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name = "type_moyenlocomotion")
+public class MoyenLocomotion implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -50,8 +54,10 @@ public abstract class MoyenLocomotion implements Serializable {
 	
 	private String observation;
 	
+	private String type_moyenlocomotion;
+	
 	@OneToOne(mappedBy="moyenLocomotion")
-	private Tournee tournee;
+	private Facteur facteur;
 	
 	@ManyToOne
 	private Marque marque;
@@ -66,7 +72,7 @@ public abstract class MoyenLocomotion implements Serializable {
 	public MoyenLocomotion(int idMl, String numChassis, String numMoteur, String numImmatriculation,
 			Date dateCarteGrise, Date datePremiereUtilisation, int annee, String statutCyclo,
 			String causeSiNonOperationnel, String assure, String couvertureProvisiore, String refPoliceAssurance,
-			Date dateAffectation, String observation, Tournee tournee, Marque marque, Marque modele) {
+			Date dateAffectation, String observation, Facteur facteur, Marque marque, Marque modele) {
 		super();
 		this.idMl = idMl;
 		this.numChassis = numChassis;
@@ -82,7 +88,7 @@ public abstract class MoyenLocomotion implements Serializable {
 		this.refPoliceAssurance = refPoliceAssurance;
 		this.dateAffectation = dateAffectation;
 		this.observation = observation;
-		this.tournee = tournee;
+		this.facteur = facteur;
 		this.marque = marque;
 		this.modele = modele;
 	}
@@ -199,12 +205,12 @@ public abstract class MoyenLocomotion implements Serializable {
 		this.observation = observation;
 	}
 
-	public Tournee getTournee() {
-		return tournee;
+	public Facteur getFacteur() {
+		return facteur;
 	}
 
-	public void setTournee(Tournee tournee) {
-		this.tournee = tournee;
+	public void setFacteur(Facteur facteur) {
+		this.facteur = facteur;
 	}
 
 	public Marque getMarque() {
@@ -221,6 +227,14 @@ public abstract class MoyenLocomotion implements Serializable {
 
 	public void setModele(Marque modele) {
 		this.modele = modele;
+	}
+
+	public String getType_moyenlocomotion() {
+		return type_moyenlocomotion;
+	}
+
+	public void setType_moyenlocomotion(String type_moyenlocomotion) {
+		this.type_moyenlocomotion = type_moyenlocomotion;
 	}
 	
 }

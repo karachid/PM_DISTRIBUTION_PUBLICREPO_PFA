@@ -16,4 +16,6 @@ public interface IUtilisateurService {
 	
 	public void remove(Long id);
 	
+	public boolean isExist(List<Object> paramNameList , List<Object>  paramValueList);
+	
 }

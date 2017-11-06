@@ -42,4 +42,11 @@ public class TourneeServiceImpl implements ITourneeService {
 		dao.remove(id);
 	}
 
+	
+	@Override
+	public List<Tournee> findByAttribute(String paramName1, boolean paramValue1, String paramName2, String paramValue2) {
+		return dao.findByAttribute(paramName1, paramValue1, paramName2, paramValue2);
+	}
+	
+
 }

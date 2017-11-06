@@ -2,6 +2,7 @@ package ma.pm.distribution.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,18 +12,24 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Region implements Serializable{
-	
+			
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idR;
 	
 	private String nomRegion;
 	
-	@OneToMany(mappedBy="region", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="region")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Site> sites;
 	
 	@ManyToOne
@@ -30,7 +37,6 @@ public class Region implements Serializable{
 
 	public Region() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Region(String nomRegion, List<Site> sites, DRAP drap) {

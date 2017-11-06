@@ -3,28 +3,36 @@ package ma.pm.distribution.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 
 @Entity
 public class Tournee implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idT;
+	private Long idT;
 	
 	private String typeZone;
 	
 	private int numTournee;
 	
+	@Temporal(TemporalType.DATE)
 	private Date dateCreationTournee;
 	
 	private String typeTournee;
@@ -49,18 +57,19 @@ public class Tournee implements Serializable {
 	
 	private int capaciteDistributionHorsPIC;
 	
+	@Temporal(TemporalType.DATE)
 	private Date dateMaj;
 	
-	private String observation;
+	private String observationTournee;
 	
-	@ManyToMany(mappedBy="tournees")
-	private List<Facteur> facteurs;
+	@OneToMany(mappedBy = "tournee")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Affectation> facteurs;
 	
 	@ManyToOne
 	private Secteur secteur;
 	
-	@OneToOne
-	private MoyenLocomotion moyenLocomotion;
+	private boolean estLibre;
 
 	public Tournee() {
 		super();
@@ -70,7 +79,7 @@ public class Tournee implements Serializable {
 			String typeMoyenLocomotion, int trajetTotal, int montantMensuelIndemniteKm,
 			int frequenceDistributionHebdomadaire, int frequenceDistributionJour, String natureTournee,
 			String typeHabitatDominant, String statutTournee, int capaciteDistributionPIC,
-			int capaciteDistributionHorsPIC, Date dateMaj, String observation, List<Facteur> facteurs,
+			int capaciteDistributionHorsPIC, Date dateMaj, String observationTournee, List<Affectation> facteurs,
 			Secteur secteur) {
 		super();
 		this.typeZone = typeZone;
@@ -88,16 +97,19 @@ public class Tournee implements Serializable {
 		this.capaciteDistributionPIC = capaciteDistributionPIC;
 		this.capaciteDistributionHorsPIC = capaciteDistributionHorsPIC;
 		this.dateMaj = dateMaj;
-		this.observation = observation;
+		this.observationTournee = observationTournee;
 		this.facteurs = facteurs;
 		this.secteur = secteur;
+		this.estLibre=true;
 	}
 
-	public int getIdT() {
+
+
+	public Long getIdT() {
 		return idT;
 	}
 
-	public void setIdT(int idT) {
+	public void setIdT(Long idT) {
 		this.idT = idT;
 	}
 
@@ -221,19 +233,28 @@ public class Tournee implements Serializable {
 		this.dateMaj = dateMaj;
 	}
 
-	public String getObservation() {
-		return observation;
+	
+	public String getTypeMoyenLocomotion() {
+		return typeMoyenLocomotion;
 	}
 
-	public void setObservation(String observation) {
-		this.observation = observation;
+	public void setTypeMoyenLocomotion(String typeMoyenLocomotion) {
+		this.typeMoyenLocomotion = typeMoyenLocomotion;
 	}
 
-	public List<Facteur> getFacteurs() {
+	public String getObservationTournee() {
+		return observationTournee;
+	}
+
+	public void setObservationTournee(String observationTournee) {
+		this.observationTournee = observationTournee;
+	}
+
+	public List<Affectation> getFacteurs() {
 		return facteurs;
 	}
 
-	public void setFacteurs(List<Facteur> facteurs) {
+	public void setFacteurs(List<Affectation> facteurs) {
 		this.facteurs = facteurs;
 	}
 
@@ -244,13 +265,42 @@ public class Tournee implements Serializable {
 	public void setSecteur(Secteur secteur) {
 		this.secteur = secteur;
 	}
-
-	public MoyenLocomotion getMoyenLocomotionObj() {
-		return moyenLocomotion;
+	
+	 public boolean isEstLibre() {
+		return estLibre;
 	}
 
-	public void setMoyenLocomotionObj(MoyenLocomotion moyenLocomotion) {
-		this.moyenLocomotion = moyenLocomotion;
+	public void setEstLibre(boolean estLibre) {
+		this.estLibre = estLibre;
+	}
+
+	@Override
+	    public boolean equals(Object obj) {
+	        if (this == obj) return true;
+	         
+	        if (obj == null || getClass() != obj.getClass()) 
+	            return false;
+	         
+	        Tournee tournee = (Tournee) obj;
+	        return Objects.equals(idT, tournee.getIdT());
+	    }
+	 
+	    @Override
+	    public int hashCode() {
+	        return Objects.hash(idT);
+	    }
+
+	@Override
+	public String toString() {
+		return "Tournee [idT=" + idT + ", typeZone=" + typeZone + ", numTournee=" + numTournee
+				+ ", dateCreationTournee=" + dateCreationTournee + ", typeTournee=" + typeTournee
+				+ ", typeMoyenLocomotion=" + typeMoyenLocomotion + ", trajetTotal=" + trajetTotal
+				+ ", montantMensuelIndemniteKm=" + montantMensuelIndemniteKm + ", frequenceDistributionHebdomadaire="
+				+ frequenceDistributionHebdomadaire + ", frequenceDistributionJour=" + frequenceDistributionJour
+				+ ", natureTournee=" + natureTournee + ", typeHabitatDominant=" + typeHabitatDominant
+				+ ", statutTournee=" + statutTournee + ", capaciteDistributionPIC=" + capaciteDistributionPIC
+				+ ", capaciteDistributionHorsPIC=" + capaciteDistributionHorsPIC + ", dateMaj=" + dateMaj
+				+ ", observation=" + observationTournee + ", facteurs=" + facteurs + ", secteur=" + secteur + "]";
 	}
 	
 }

@@ -42,4 +42,9 @@ public class SiteServiceImpl implements ISiteService {
 		dao.remove(id);
 	}
 
+	@Override
+	public Site findOne(String paramName, String paramValue) {
+		return dao.findOne(paramName, paramValue);
+	}
+
 }
